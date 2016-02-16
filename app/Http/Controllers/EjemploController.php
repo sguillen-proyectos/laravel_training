@@ -46,16 +46,16 @@ class EjemploController extends Controller
 
     public function ejemplo7(Request $request)
     {
-        $pagina = $request->get('page', 1);
-        $limite = $request->get('limit', 15);
+        $pagina = $request->input('page', 1);
+        $limite = $request->input('limit', 15);
 
         return "Página $pagina -> Límite: $limite";
     }
 
     public function ejemploPost(Request $request, $var1)
     {
-        $nombre = $request->get('nombre');
-        $edad = $request->get('edad');
+        $nombre = $request->input('nombre');
+        $edad = $request->input('edad');
 
         return "Respuesta POST: Nombre: $nombre, Edad: $edad, Var1: $var1";
     }

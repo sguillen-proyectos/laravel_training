@@ -118,3 +118,11 @@ Route::delete('ruta/delete/{var1}', function(Request $request, $var1) {
     return "Respuesta DELETE: Nombre: $nombre, Edad: $edad, Var1: $var1";
 });
 
+/**
+ * EJERCICIO crear una ruta para el método GET que reciba el siguiente patrón
+ * ejercicio/{var1}/suma/{var2}/{mensaje?} de tal forma que
+ * var1 y var2 SIEMPRE SEAN NUMEROS POSITIVOS
+ * y mensaje sea opcional con un valor por defecto de "una suma".
+ * La respuesta debe ser el siguiente mensaje
+ * el mensaje y la suma de var1 con var2
+ */

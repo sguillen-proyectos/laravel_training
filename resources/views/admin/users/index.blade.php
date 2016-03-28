@@ -26,4 +26,8 @@
     @endforeach
   </tbody>
 </table>
+<p><b>Total en la página: </b>{{$users->count()}}</p>
+<p><b>Total: </b>{{$users->total()}}</p>
+
+{!! $users->render() !!}
 @endsection

@@ -9,8 +9,12 @@ class UserController extends Controller
 {
     public function index()
     {
+        // $usuarios = User::all();
+        // $usuarios = User::where('id', '>', 0)->simplePaginate(2);
+        $usuarios = User::where('id', '>', 0)->paginate(2);
+
         return view('admin.users.index')
-            ->with('users', User::all());
+            ->with('users', $usuarios);
     }
 
     public function create(Request $r)

@@ -35,7 +35,12 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/home');
+            /*
+             * En caso que se quiera entrar a login
+             * al haber ya iniciado sesion, el framework
+             * redireccionara a la ruta "admin/users"
+             */
+            return redirect('admin/users');
         }
 
         return $next($request);

@@ -38,7 +38,12 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                /*
+                 * Si existe una ruta que requiere previa
+                 * autenticacion y no cumple con esta, el framework
+                 * redirigira a /login
+                 */
+                return redirect()->guest('/login');
             }
         }
 

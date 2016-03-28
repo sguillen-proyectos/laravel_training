@@ -2,64 +2,86 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
+use Auth;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
+    /*
+     * Cuando se usa el sistema de autenticacion que laravel
+     * trae solo es necesario crear la vista de login que en nuestro
+     * caso se encuentra en: resources/views/auth/login.blade.php
+     * y definir algunas propiedades en la clase.
      */
-    public function __construct()
+
+    // Cuando el usuario ingrese a la url que en nuestro caso
+    // es /login y ya se ha iniciado sesion laravel redireccionara
+    // a la ruta que se encuentra en $redirectPath o $redirectTo
+    protected $redirectPath = '/admin/users';
+    // protected $redirectTo = '/admin/users';
+
+    // $redirectAfterLogout hace referencia a que url se redireccionará
+    // despues de hacer logout bien podria ser la raiz o /login o la que se desee
+    protected $redirectAfterLogout = '/';
+
+    // Se especifica la url donde se mostrará el formulario de login
+    protected $loginPath = '/login';
+
+    // Por defecto laravel espera que el campo de la base de datos de la tabla
+    // 'users' sea 'email' para el inicio de sesion. En nuestro caso si quisieramos
+    // que el campo de inicio de sesion sea 'username' o lo que sea hay que especificar
+    // la propiedad $username
+    protected $username = 'username';
+
+    protected $reglas = [
+        'username' => 'required',
+        'password' => 'required'
+    ];
+
+    protected $mensajes = [
+        'required' => 'Campo :attribute requerido'
+    ];
+
+    public function login(Request $r)
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        // Verifica que no se haya iniciado sesión
+        if (!Auth::check()) {
+            return view('auth.login');
+        }
+        // En caso de haber iniciado sesion en nuestro
+        // caso redirecciona a /admin/users
+        return redirect($this->redirectPath);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function postMiLogin(Request $r)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $this->validate($r->all(), $this->reglas, $this->mensajes);
+        $datos = [
+            'username' => $r->input('username'),
+            'password' => $r->input('password')
+        ];
+
+        // Esto verifica los datos de inicio de sesión
+        // si da verdadero es que se inicio sesion caso contrario
+        // las credenciales son erroneas
+        if (Auth::attempt($datos)) {
+            return redirect($this->redirectPath);
+        }
+
+        return redirect($this->loginPath)
+            ->withErrors()
+            ->withInput();
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
+    public function getMiLogout(Request $r)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        Auth::logout();
     }
 }

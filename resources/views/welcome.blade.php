@@ -1,45 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Laravel</title>
-
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-
-        <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Capacitación ABC</div>
-            </div>
-        </div>
-    </body>
+<head>
+  <title>Laravel</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+</head>
+<body>
+  <h1>foobar</h1>
+  <div class="row">
+    <div class="col-md-6" style="background: #C8EC3B">
+      col1.1
+    </div>
+    <div class="col-md-3" style="background: #E15B9D">
+      col1.2
+    </div>
+    <div class="col-md-3" style="background: #BED36D">
+      col1.3
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" style="background: #30A288">
+      col2.1
+    </div>
+    <div class="col-md-3" style="background: #2109A4">
+      col2.2
+    </div>
+    <div class="col-md-3" style="background: #62DD1C">
+      col3.3
+    </div>
+  </div>
+</body>
 </html>

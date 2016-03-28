@@ -45,6 +45,7 @@ class UserController extends Controller
         // }
         $data = $r->except(['password']);
         $user = new User($data);
+        // el metodo bcrypt calcula el hash del valor dado
         $user->password = bcrypt($r->input('password'));
         $user->save();
 
@@ -81,6 +82,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->fill($r->except(['password']));
+        // el metodo bcrypt calcula el hash del valor dado
         $user->password = bcrypt($r->input('password'));
         $user->save();
 

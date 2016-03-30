@@ -9,12 +9,45 @@ class UserController extends Controller
 {
     public function index()
     {
-        // $usuarios = User::all();
-        // $usuarios = User::where('id', '>', 0)->simplePaginate(2);
-        $usuarios = User::where('id', '>', 0)->paginate(2);
+        $usuarios = User::paginate(2);
 
         return view('admin.users.index')
             ->with('users', $usuarios);
+    }
+
+    public function index2()
+    {
+        return view('admin.users.indexDataTable');
+    }
+
+    public function indexAjax(Request $r)
+    {
+        // Para saber que variables llegan por parte
+        // del control DataTable ver:
+        // https://datatables.net/manual/server-side
+        $limit = $r->input('length', 10);
+        $page = ($r->input('start') / $limit) + 1;
+        $column = $r->input('order')[0]['column'];
+        $column = $r->input('columns')[$column]['data'];
+        $direction = $r->input('order')[0]['dir'];
+        $pattern = $r->input('search')['value'];
+
+        // select *
+        // from users
+        // where email like '%algunapatron%'
+        // order by [columna] asc|desc
+        $users = User::orderBy($column, $direction)
+            ->where('email', 'like', "%$pattern%")
+            ->paginate($limit, ['*'], 'start', $page);
+
+        $result = [
+            'draw' => $r->input('draw'),
+            'recordsTotal' => $users->total(),
+            'recordsFiltered' => $users->total(),
+            'data' => $users->all()
+        ];
+
+        return response()->json($result);
     }
 
     public function create(Request $r)

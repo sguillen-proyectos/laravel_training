@@ -32,7 +32,16 @@ Route::group(['middleware' => 'auth'], function() {
  * para entradas y otro grupo para usuarios
  */
 Route::group(['middleware' => 'auth'], function() {
+    // Forma normal de ver datos
     Route::get('admin/users', ['uses' => 'UserController@index']);
+
+    // ================== DataTable Ajax ==============
+    // Retorna la vista
+    Route::get('admin/users2', ['uses' => 'UserController@index2']);
+    // Obtiene los registros
+    Route::get('admin/users2/ajax', ['uses' => 'UserController@indexAjax']);
+    // ================== DataTable Ajax ==============
+
     Route::get('admin/users/create', ['uses' => 'UserController@create']);
     Route::get('admin/users/{id}/edit', ['uses' => 'UserController@edit']);
     Route::post('admin/users/create', ['uses' => 'UserController@store']);
